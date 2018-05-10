@@ -1,0 +1,32 @@
+---
+# Enable the auto update services
+# Available options: 'yes', 'no'
+autoupdates_enabled: "yes"
+
+# Set the auto update service state
+# Available options: 'started', 'stopped'
+autoupdates_state: "started"
+
+# Configure which packages should be ignored
+autoupdates_blacklist_packages: []
+# - kernel*
+# - php*
+# - apache2*
+# - httpd*
+
+# Defines the type of update to use on RedHat systems
+# default                            = yum upgrade
+# security                           = yum --security upgrade
+# security-severity:Critical         = yum --sec-severity=Critical upgrade
+# minimal                            = yum --bugfix update-minimal
+# minimal-security                   = yum --security update-minimal
+# minimal-security-severity:Critical =  --sec-severity=Critical update-minimal
+autoupdates_RedHat_update_type: default
+
+
+# Defines the Allowed-Origins for Debian updates
+autoupdates_Debian_Allowed_Origins:
+  - security
+  - updates
+  # - proposed
+  # - backports

@@ -1,0 +1,41 @@
+---
+# Variable configuration.
+- include_tasks: variables.yml
+
+- name: "update apt-cache"
+  apt:
+    update_cache: 'yes'
+  when: ansible_os_family == 'Debian'
+  changed_when: false
+
+- name: "Install auto-update packages"
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ required_packages }}"
+
+- name: "Enable auto-update service(s)"
+  service:
+    name: "{{ item }}"
+    state: "{{ autoupdates_state }}"
+    enabled: "{{ autoupdates_enabled }}"
+  with_items: "{{ required_packages }}"
+
+- name: "Configure auto-update services | Debian"
+  template:
+    src: "etc/apt/apt.conf.d/{{ item }}.j2"
+    dest: "/etc/apt/apt.conf.d/{{ item }}"
+    mode: 0644
+  with_items:
+    - 20auto-upgrades
+    - 50unattended-upgrades
+  when: ansible_os_family == 'Debian'
+
+- name: "Configure auto-update services | RedHat"
+  template:
+    src: "etc/yum/{{ item }}.j2"
+    dest: "/etc/yum/{{ item }}"
+    mode: 0644
+  with_items:
+    - yum-cron.conf
+  when: ansible_os_family == 'RedHat'

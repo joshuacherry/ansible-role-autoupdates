@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: ansible-role-autoupdates
+
+  vars:
+    autoupdates_blacklist_packages:
+      - kernel*
+      - apache2*
+      - httpd*
+      - somerandomtestapp*
